@@ -1,0 +1,67 @@
+.firmness-scale {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.firmness-scale .firmness-scale__progress {
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.firmness-scale .firmness-scale__progress .firmness-scale__progress--item {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid #000;
+}
+
+.firmness-scale .firmness-scale__progress .firmness-scale__progress--item[active] {
+    border: 2px solid #03fd25;
+}
+
+.firmness-scale .firmness-scale__progress .firmness-scale__progress--item[aria-disabled="true"] {
+    text-decoration: line-through;
+    border: 1px solid #8b8888;
+}
+
+.firmness-scale .firmness-scale__progress .firmness-scale__progress--tooltip {
+    visibility: hidden;
+    background: #fff;
+    max-height: 0;
+    height: auto;
+    width: 80px;
+    transition: max-height 0.15s ease-out;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    text-align: center;
+}
+
+.firmness-scale .firmness-scale__progress .firmness-scale__progress--item:hover .firmness-scale__progress--tooltip {
+    visibility: visible;
+    max-height: 70px;
+    transition: max-height 0.15s ease-in;
+}
+
+.firmness-scale__heading {
+    margin-bottom: 1.5rem;
+}
+
+.firmness-scale__wrapper {
+    padding-bottom: 20px;
+}

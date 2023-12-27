@@ -1,0 +1,77 @@
+{% comment %}
+  Renders a firmness scale based on product metafields
+
+  Accepts:
+  - block: {Object} passes in the block information.
+  - current_level: {Object} current level info from metafield
+
+  Usage:
+  {% render 'icon-with-text',
+    block: block
+  %}
+{% endcomment %}
+
+{% liquid
+  assign title = block.settings.title
+  assign product_list = block.settings.product_list
+  assign softness_icon = block.settings.softness_icon
+  assign firmness_icon = block.settings.firmness_icon
+  assign background = block.settings.background
+  assign firmness_object = shop.metaobjects.firmness_scale.values
+  assign firmness_object_sorted = firmness_object | sort: 'string_value'
+%}
+
+{% style %}
+  #firmness-scale--{{ block.id }} .firmness-scale__progress {
+    background: {{ background }};
+  }
+{% endstyle %}
+
+<div class="firmness-scale__wrapper">
+    <h4 class="firmness-scale__heading caption-large">
+      {{ title }}
+    </h4>
+    <div class="firmness-scale" id="firmness-scale--{{ block.id }}">
+        {% if softness_icon != blank %}
+            {{ softness_icon 
+              | image_url: width: 500 
+              | image_tag: width: 30, loading: 'lazy'
+            }}
+        {% endif %}
+        <div class="firmness-scale__progress">
+            {% for firmness in firmness_object_sorted %}
+                {% assign firmness_product = false %}
+                {% for listedProduct in product_list %}
+                    {% if listedProduct.metafields.custom.firmness_scale.value.value == firmness.value %}
+                        {% assign firmness_product = listedProduct %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+                <a 
+                  class="firmness-scale__progress--item full-unstyled-link"
+                  {% if firmness_product %}
+                    href="{{ firmness_product.url }}"
+                  {% else %}
+                    role="link" aria-disabled="true"
+                  {% endif %}
+                  {% if current_level.value == firmness.value %}
+                    active
+                  {% endif %}
+                >
+                    <span>
+                        {{ firmness.value }}
+                    </span>
+                    <span class="firmness-scale__progress--tooltip">
+                        {{ firmness.label }}
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+        {% if firmness_icon != blank %}
+            {{ firmness_icon 
+              | image_url: width: 500 
+              | image_tag: width: 30, loading: 'lazy'
+            }}
+        {% endif %}
+    </div>
+</div>
